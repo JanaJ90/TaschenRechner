@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "TaschenRechner",
+            "request": "launch",
+            "mainClass": "TaschenRechner",
+            "projectName": "TaschenRechner_e7b6d08d"
+        },
+        {
+            "type": "java",
+            "name": "Launch It!",
+            "request": "launch",
+            "mainClass": "${file}",
+            "console": "internalConsole"
+        }
+    ]
+}
