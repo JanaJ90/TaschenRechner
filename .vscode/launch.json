@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MySwingApp",
+            "request": "launch",
+            "mainClass": "MySwingApp",
+            "projectName": "TaschenRechner_b098f89e"
+        },
+        {
+            "type": "java",
+            "name": "TaschenRechner",
+            "request": "launch",
+            "mainClass": "TaschenRechner",
+            "projectName": "TaschenRechner_b098f89e"
+        },
+        {
+            "type": "java",
             "name": "TaschenRechner",
             "request": "launch",
             "mainClass": "TaschenRechner",

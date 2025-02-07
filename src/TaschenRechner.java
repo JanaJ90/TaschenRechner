@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-
-
 import java.awt.event.*;
 
 public class TaschenRechner extends JFrame implements ActionListener {
@@ -9,7 +7,7 @@ public class TaschenRechner extends JFrame implements ActionListener {
     private JTextField eingabeFeld;
     //Textfeld für die Ergebnis anzeigen
     private JTextField ergebnisFeld;
-    private int  ergebnis;
+    private Integer ergebnis;
     private String operator;
     private boolean startNewNumber;
     private String ausdruck;
@@ -19,12 +17,12 @@ public class TaschenRechner extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 450);
         setLocationRelativeTo(null);
-
+        
          // Setze den Hintergrund der Content Pane
         getContentPane().setBackground(Color.BLACK);
 
         
-        //Initialisierung der Variablen 
+        //Initialisierung der Variablen
         ergebnis = 0;
         operator = "=";
         startNewNumber = true;
@@ -63,7 +61,7 @@ public class TaschenRechner extends JFrame implements ActionListener {
         buttonPanel.setLayout(new GridLayout(4, 4, 5, 5));
         buttonPanel.setBackground(Color.BLACK);
     
-        // Diese Klasse ist nicht public, aber im selben File verfügbar:
+// es darf keine 2 public class geben, deswegen nur class
 class RoundButton extends JButton {
     public RoundButton(String label) {
         super(label);
@@ -124,13 +122,13 @@ class RoundButton extends JButton {
         add(buttonPanel, BorderLayout.CENTER);
 
         setVisible(true);
-     }
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         // prüfe ob eine Taste gedrückt wurde
          // Ziffern: 0 bis 9
-         if (command.matches("\\d")) {
+        if (command.matches("\\d")) {
             if (startNewNumber) {
                 ergebnisFeld.setText(command);
                 startNewNumber = false;
@@ -162,7 +160,9 @@ class RoundButton extends JButton {
             if (command.equals("=")) {
                 // Bei "=": Ausdruck komplettieren und Ergebnis anzeigen
                 eingabeFeld.setText(ausdruck + " " );
-                ergebnisFeld.setText(String.valueOf(ergebnis));
+                if (!ergebnisFeld.getText().contains("Error")) {
+                    ergebnisFeld.setText(String.valueOf(ergebnis));
+                }
                 ausdruck = "";
                 operator = "=";
             } else {
@@ -183,33 +183,43 @@ class RoundButton extends JButton {
         }}
     }
     private void rechne(int number) {
+        // Zeigt  die Error im unterenTextField
+        // if (operator.equals("/") && number == 0) {
+        //     ergebnisFeld.setText("Error");
+        //     System.out.println("DEBUG: Division durch 0 erkannt! Methode wird verlassen.");
+        //     return;
+        // }
+    
+        // Falls kein Fehler, normal rechnen
         switch (operator) {
             case "=":
                 ergebnis = number;
                 break;
             case "+":
-            ergebnis += number;
+                ergebnis += number;
                 break;
             case "-":
-            ergebnis -= number;
+                ergebnis -= number;
                 break;
             case "*":
-            ergebnis *= number;
+                ergebnis *= number;
                 break;
             case "/":
                 if (number == 0) {
-                    // Division durch Null verhindern
-                    JOptionPane.showMessageDialog(this, "Division durch Null nicht erlaubt");
-                    ergebnis = 0;
-                } else {
-                    ergebnis /= number;
-                }
+                // Division durch Null verhindern
+                // Zeigt extra fenster mit Mitteilung
+                JOptionPane.showMessageDialog(this, "Division durch Null nicht erlaubt");
+                ergebnis = 0;
+                ergebnis /= number;
                 break;
         }
+    
+        // Falls ergebnis NULL ist (wegen Fehler), NICHT aktualisieren!
+        if (!ergebnisFeld.getText().contains("Error")) {
+            ergebnisFeld.setText(String.valueOf(ergebnis));
+        }
     }
-
-
-
+}
     public static void main(String[] args) {
         // Erzeuge die GUI im Event-Dispatch-Thread
         SwingUtilities.invokeLater(() -> new TaschenRechner());
